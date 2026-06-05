@@ -1,0 +1,26 @@
+def get_role(xp):
+    if xp > 100:
+        return "👑 VIP"
+    elif xp > 20:
+        return "⭐ VERIFIED"
+    return "🆕 NEW"
+
+
+@dp.message(Command("profile"))
+async def profile(message: Message):
+    user = await get_user(message.from_user.id)
+
+    if not user:
+        return await message.answer("Нет данных")
+
+    name, status, xp, warns = user
+    role = get_role(xp)
+
+    await message.answer(
+        f"👤 PROFILE\n\n"
+        f"Name: {name}\n"
+        f"Status: {status}\n"
+        f"XP: {xp}\n"
+        f"Warns: {warns}\n"
+        f"Role: {role}"
+    )
