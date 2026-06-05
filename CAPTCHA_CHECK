@@ -1,0 +1,19 @@
+@dp.callback_query(F.data.startswith("cap:"))
+async def check(call: CallbackQuery):
+    _, uid, ans = call.data.split(":")
+    uid = int(uid)
+    ans = int(ans)
+
+    if uid != call.from_user.id:
+        return await call.answer("⛔")
+
+    if captcha_store.get(uid) == ans:
+        async with aiosqlite.connect(DB) as db:
+            await db.execute("UPDATE users SET status='verified' WHERE user_id=?", (uid,))
+            await db.commit()
+
+        await call.message.edit_text("✅ VERIFIED!")
+        await call.answer()
+    else:
+        await warn_user(uid)
+        await call.answer("❌ неверно", show_alert=True)
