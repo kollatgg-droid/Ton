@@ -1,0 +1,15 @@
+@dp.message(Command("list"))
+async def list_users(message: Message):
+    if message.from_user.id != ADMIN_ID:
+        return
+
+    async with aiosqlite.connect(DB) as db:
+        async with db.execute("SELECT user_id, name, xp FROM users") as cur:
+            rows = await cur.fetchall()
+
+    text = "📋 USERS:\n\n"
+
+    for uid, name, xp in rows:
+        text += f"{name} | XP:{xp} | ID:{uid}\n"
+
+    await message.answer(text)
