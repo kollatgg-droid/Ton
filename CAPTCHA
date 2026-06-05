@@ -1,0 +1,16 @@
+def make_captcha(user_id: int):
+    a = random.randint(1, 9)
+    b = random.randint(1, 9)
+    correct = a + b
+
+    captcha_store[user_id] = correct
+
+    buttons = [
+        InlineKeyboardButton(text=str(correct), callback_data=f"cap:{user_id}:{correct}"),
+        InlineKeyboardButton(text=str(correct+1), callback_data=f"cap:{user_id}:{correct+1}"),
+        InlineKeyboardButton(text=str(correct-1), callback_data=f"cap:{user_id}:{correct-1}")
+    ]
+
+    random.shuffle(buttons)
+
+    return InlineKeyboardMarkup(inline_keyboard=[buttons]), f"🛡 Реши: {a} + {b}"
