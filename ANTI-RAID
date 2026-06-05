@@ -1,0 +1,12 @@
+@dp.chat_member()
+async def anti_raid(event):
+    global join_times
+
+    now = time.time()
+    join_times.append(now)
+
+    join_times = [t for t in join_times if now - t < 10]
+
+    if len(join_times) > 5:
+        await bot.send_message(event.chat.id, "🚨 RAID DETECTED")
+        return
