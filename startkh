@@ -1,0 +1,11 @@
+@dp.message(Command("start"))
+async def start(message: Message):
+    await add_user(message.from_user.id)
+
+    kb, text = make_captcha(message.from_user.id)
+
+    await message.answer(
+        "👋 <b>Добро пожаловать в ULTIMATE++</b>\n\n"
+        "Пройди проверку:",
+        reply_markup=kb
+    )
