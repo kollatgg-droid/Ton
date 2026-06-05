@@ -1,0 +1,6 @@
+@dp.message()
+async def xp_system(message: Message):
+    if message.from_user.is_bot:
+        return
+
+    await add_xp(message.from_user.id, 1)
